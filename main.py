@@ -39,7 +39,7 @@ def add_link(link, name):
         if line != "</body>\n":
             file_out.write(line)
         else:
-            file_out.write(f"<a index='{cout}' href='{link}'>{name}</a>\n</body>\n</html>\n")
+            file_out.write(f"<p><a index='{cout}' href='{link}'>{name}</a></p>\n</body>\n</html>\n")
             break
     file_out.close()
     remove_file()
