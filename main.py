@@ -10,6 +10,11 @@ def get_links():
     links = soup.find_all("a")
     return links
 
+def show_links():
+    links = get_links()
+    for link in links:
+        print(link.get('index'), ":", link.text)
+
 def get_soup():
     file = open(FILE, 'r')
     html = file.read()
@@ -63,8 +68,11 @@ def delete_link(index):
 
 def main():
     if (len(argv) == 2):
-        _, index = argv
-        delete_link(index)
+        if (argv[1] == "show"):
+            show_links()
+        else:
+            _, index = argv
+            delete_link(index)
     elif (len(argv) == 3):
         _, link, name = argv
         add_link(link, name)
