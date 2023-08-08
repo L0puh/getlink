@@ -29,7 +29,7 @@ def get_link(link_id):
         return link.text
     return None
 
-def add_link(link, name):
+def add_link(link, name, content_type):
     cout = len(get_links())+1
     file = open(FILE, "r")
     lines = file.readlines()
@@ -39,7 +39,7 @@ def add_link(link, name):
         if line != "</body>\n":
             file_out.write(line)
         else:
-            file_out.write(f"<p><a index='{cout}' href='{link}'>{name}</a></p>\n</body>\n</html>\n")
+            file_out.write(f"<p>{content_type}: <a index='{cout}' content_type='{content_type}' href='{link}'>{name}</a></p>\n</body>\n</html>\n")
             break
     file_out.close()
     remove_file()
@@ -59,10 +59,9 @@ def delete_link(index):
         file.close()
         file_out = open(OUT_FILE, "a+")
         for line in lines:
-            if line[1] == "a" and line[10] == index:
-                    continue
-            else:
-                file_out.write(line)
+            if line.find("<a") !=-1 and line.find(f"index='{index}'") !=-1:
+                continue
+            file_out.write(line)
         file_out.close()
         remove_file()
 
@@ -73,9 +72,9 @@ def main():
         else:
             _, index = argv
             delete_link(index)
-    elif (len(argv) == 3):
-        _, link, name = argv
-        add_link(link, name)
+    elif (len(argv) == 4):
+        _, link, name, content_type = argv
+        add_link(link, name, content_type)
 
 if __name__ == "__main__":
     main()
