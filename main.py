@@ -28,8 +28,8 @@ def show_links():
     links = get_links()
     for link in links:
         print(f"{link.get('index')}:\
-            [{link.get('content_type')}]\
-            {link.text}")
+[{link.get('content_type')}]\
+{link.text}")
 
 def get_soup():
     file = open(FILE, 'r')
@@ -56,9 +56,9 @@ def add_link(link, name, content_type):
             file_out.write(line)
         else:
             file_out.write(f"<p>{content_type}: <a index='{cout}'\
-                    content_type='{content_type}'\
-                    href='{link}'>{name}</a></p>\n\
-                    </body>\n</html>\n")
+content_type='{content_type}'\
+href='{link}'>{name}</a></p>\n\
+</body>\n</html>\n")
             break
     file_out.close()
     remove_file()
