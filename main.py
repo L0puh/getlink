@@ -5,6 +5,20 @@ from sys import argv
 FILE = "homepage.html"
 OUT_FILE = "out.html"
 
+def get_types():
+    links = get_links();
+    types = [];
+    for link in links:
+        exists=False
+        link_type = link.get("content_type")
+        for con_type in types:
+            if link_type == con_type:
+                exists=True
+                break
+        if exists == False:
+            types.append(link_type)
+    return types
+
 def get_links():
     soup = get_soup()
     links = soup.find_all("a")
@@ -13,7 +27,9 @@ def get_links():
 def show_links():
     links = get_links()
     for link in links:
-        print(link.get('index'), ":", link.text)
+        print(f"{link.get('index')}:\
+            [{link.get('content_type')}]\
+            {link.text}")
 
 def get_soup():
     file = open(FILE, 'r')
@@ -39,7 +55,10 @@ def add_link(link, name, content_type):
         if line != "</body>\n":
             file_out.write(line)
         else:
-            file_out.write(f"<p>{content_type}: <a index='{cout}' content_type='{content_type}' href='{link}'>{name}</a></p>\n</body>\n</html>\n")
+            file_out.write(f"<p>{content_type}: <a index='{cout}'\
+                    content_type='{content_type}'\
+                    href='{link}'>{name}</a></p>\n\
+                    </body>\n</html>\n")
             break
     file_out.close()
     remove_file()
@@ -65,10 +84,31 @@ def delete_link(index):
         file_out.close()
         remove_file()
 
+def sort():
+    types = get_types()
+    file = open(FILE, 'r')
+    lines = file.readlines()
+    file.close()
+    out = open(OUT_FILE, 'a+')
+    header=[]
+    for line in lines:
+        out.write(line)
+        if line.find("<body") != -1:
+            break
+    for c_type in types:
+        for line in lines:
+            if line.find(c_type) != -1:
+                out.write(line)
+    out.write("</body>\n</html>\n")
+    out.close()
+    remove_file()
+
 def main():
     if (len(argv) == 2):
         if (argv[1] == "show"):
             show_links()
+        elif (argv[1] == "sort"):
+            sort()
         else:
             _, index = argv
             delete_link(index)

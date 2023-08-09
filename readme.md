@@ -24,5 +24,3 @@ and install the bs4
 pip install beautifulsoup4
 ```
 
-## todo:
-add sorting by content type and id 
